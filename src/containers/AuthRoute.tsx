@@ -1,13 +1,13 @@
+import React, { ReactElement } from 'react';
 import { Navigate } from "react-router-dom";
-import {ReactNode} from "react";
-import { paths } from "../constants/paths";
+import { paths } from "@/constants/paths";
 
-type Props = {
-    children: ReactNode,
+interface AuthRouteProps {
+    children: ReactElement;
 }
 
-const AuthRoute = ({ children }: Props) => {
-    const loggedIn = false;
+const AuthRoute: React.FC<AuthRouteProps> = ({ children }): ReactElement => {
+    const loggedIn = false; // Replace with your actual authentication logic
 
     if (!loggedIn) {
         return children;
@@ -16,4 +16,4 @@ const AuthRoute = ({ children }: Props) => {
     return <Navigate to={paths.dashboard} replace />;
 }
 
-export default AuthRoute
+export default AuthRoute;

@@ -1,21 +1,18 @@
-import { Navigate } from "react-router-dom";
-import {ReactNode} from "react";
-import { paths } from "../constants/paths";
+import React, { ReactElement } from 'react';
+import { Navigate } from 'react-router-dom';
 
-type Props = {
-    children: ReactNode,
-
+interface PrivateRouteProps {
+    children: ReactElement;
 }
 
-const PrivateRoute = ({ children }: Props) => {
-    const loggedIn = false;
-    const userRole = "ADMIN";
+const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }): ReactElement => {
+    const isAuthenticated = true;
 
-    if (loggedIn && (userRole === "ADMIN" || userRole === "USER")) {
-        return children;
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
     }
 
-    return <Navigate to={paths.login} replace />;
-}
+    return children;
+};
 
-export default PrivateRoute
+export default PrivateRoute;

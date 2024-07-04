@@ -1,12 +1,12 @@
 import { Navigate } from "react-router-dom";
-import {ReactNode} from "react";
-import { paths } from "../constants/paths";
+import React, {ReactElement} from "react";
+import {paths} from "@/constants/paths";
 
-type Props = {
-    children: ReactNode,
+interface AdminRouteProps {
+    children: ReactElement;
 }
 
-const AdminRoute = ({ children }: Props) => {
+const AdminRoute: React.FC<AdminRouteProps> = ({ children }): ReactElement => {
 
     const loggedIn = false;
     const userRole = "ADMIN";

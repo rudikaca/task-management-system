@@ -1,16 +1,16 @@
 import { PageHeader, PageHeaderHeading } from "@/components/page-header";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function Dashboard() {
+export default function Sample() {
     return (
         <>
             <PageHeader>
-                <PageHeaderHeading>Dashboard</PageHeaderHeading>
+                <PageHeaderHeading>Sample Page</PageHeaderHeading>
             </PageHeader>
             <Card>
                 <CardHeader>
-                    <CardTitle>Task Management System</CardTitle>
-                    <CardDescription>React + Vite + TypeScript template for building apps with shadcn/ui.</CardDescription>
+                    <CardTitle>Card Title</CardTitle>
+                    <CardDescription>Card description.</CardDescription>
                 </CardHeader>
             </Card>
         </>
