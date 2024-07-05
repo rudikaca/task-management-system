@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState} from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -13,16 +13,23 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
+import { signOut } from "firebase/auth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { mainMenu } from "@/config/menu";
 import { ChevronDownIcon, ViewVerticalIcon } from "@radix-ui/react-icons";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Logo } from "../logo";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {auth} from "@/config/firebase-config";
+import {useSelector} from "react-redux";
+import {RootState} from "@/store";
 
 export function Header() {
+    const {user} = useSelector((state: RootState) => state.auth)
     const [open, setOpen] = useState(false)
     const location = useLocation();
+
+    const handleSignOut = () => signOut(auth);
 
     return (
         <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur">
@@ -178,14 +185,14 @@ export function Header() {
                             <DropdownMenuContent className='w-56' align='end' forceMount>
                                 <DropdownMenuLabel className='font-normal'>
                                     <div className='flex flex-col space-y-1'>
-                                        <p className='text-sm font-medium leading-none'>Rudi</p>
+                                        <p className='text-sm font-medium leading-none'>{user?.role}</p>
                                         <p className='text-xs leading-none text-muted-foreground'>
-                                            rudi@gmail.com
+                                            {user?.email}
                                         </p>
                                     </div>
                                 </DropdownMenuLabel>
                                 <DropdownMenuSeparator />
-                                <DropdownMenuItem>Log out</DropdownMenuItem>
+                                <DropdownMenuItem onClick={handleSignOut}>Log out</DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </nav>
