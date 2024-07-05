@@ -14,7 +14,10 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore';
+import {auth, db} from "@/config/firebase-config";
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Enter a valid email address' }),
@@ -26,13 +29,35 @@ type RegisterFormValue = z.infer<typeof formSchema>;
 
 function Signup() {
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const form = useForm<RegisterFormValue>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            email: '',
+            password: '',
+            role: 'user'
+        }
     });
 
     const onSubmit = async (data: RegisterFormValue) => {
-        console.log(data);
+        setLoading(true);
+        try {
+            const userCredencial = await createUserWithEmailAndPassword(auth, data.email, data.password);
+            const user = userCredencial.user;
+
+            await setDoc(doc(db, "users", user.uid), {
+                email: data.email,
+                role: data.role,
+                createdAt: new Date()
+            });
+
+            navigate('/');
+        } catch (error) {
+            console.error('Register error', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -87,7 +112,7 @@ function Signup() {
                                 <FormControl>
                                     <Select
                                         onValueChange={field.onChange}
-                                        value={field.value}
+                                        defaultValue={field.value}
                                         disabled={false}
                                     >
                                         <SelectTrigger>

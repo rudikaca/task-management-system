@@ -5,24 +5,39 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {FormControl, FormField, FormItem, FormLabel, FormMessage, Form} from "@/components/ui/form";
 import { Input } from '@/components/ui/input';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import {auth} from "@/config/firebase-config";
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Enter a valid email address' }),
-    password: z.string()
+    password: z.string().min(6, { message: 'Password must be at least 6 characters' })
 });
 
 type UserFormValue = z.infer<typeof formSchema>;
 
 function Login() {
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const form = useForm<UserFormValue>({
         resolver: zodResolver(formSchema),
+        defaultValues: {
+            email: '',
+            password: ''
+        }
     });
 
     const onSubmit = async (data: UserFormValue) => {
-        console.log(data)
+        setLoading(true);
+        try {
+            await signInWithEmailAndPassword(auth, data.email, data.password);
+            navigate('/');
+        } catch (error) {
+            console.error('Login error', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
