@@ -17,7 +17,7 @@ export const appConfig: AppConfig = {
         url: "https://github.com/rudikaca/task-management-system",
     },
     author: {
-        name: "rudi",
+        name: "Rudi",
         url: "https://github.com/rudikaca",
     }
 }

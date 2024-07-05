@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Button} from "@/components/ui/button";
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -6,9 +6,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import {FormControl, FormField, FormItem, FormLabel, FormMessage, Form} from "@/components/ui/form";
 import { Input } from '@/components/ui/input';
 import {Link, useNavigate} from "react-router-dom";
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import {auth} from "@/config/firebase-config";
 import toast from "react-hot-toast";
+import {useAppDispatch} from "@/store";
+import {loginUser} from "@/store/actions/authActions";
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Enter a valid email address' }),
@@ -18,6 +18,7 @@ const formSchema = z.object({
 type UserFormValue = z.infer<typeof formSchema>;
 
 function Login() {
+    const dispatch = useAppDispatch();
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
@@ -29,10 +30,10 @@ function Login() {
         }
     });
 
-    const onSubmit = async (data: UserFormValue) => {
+    const onSubmit = useCallback(async (data: UserFormValue) => {
         setLoading(true);
         try {
-            await signInWithEmailAndPassword(auth, data.email, data.password);
+            await dispatch(loginUser(data)).unwrap();
             toast.success('Logged in successfully!');
             navigate('/');
         } catch (error) {
@@ -45,7 +46,7 @@ function Login() {
         } finally {
             setLoading(false);
         }
-    };
+    }, [dispatch, navigate, setLoading]);
 
     return (
         <div className="flex min-h-screen justify-center items-center flex-col">
@@ -93,7 +94,7 @@ function Login() {
                     />
 
                     <Button disabled={loading} className="ml-auto w-full max-w-xs" type="submit">
-                        Login
+                        {loading ? 'Loading...' : 'Login'}
                     </Button>
 
                     <div className="mt-4 text-center">

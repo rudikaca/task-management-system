@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import { Button } from "@/components/ui/button";
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -23,7 +23,7 @@ import toast from "react-hot-toast";
 const formSchema = z.object({
     email: z.string().email({ message: 'Enter a valid email address' }),
     password: z.string(),
-    role: z.enum(['admin', 'user'])
+    role: z.enum(['ADMIN', 'USER'] as const).optional()
 });
 
 type RegisterFormValue = z.infer<typeof formSchema>;
@@ -37,7 +37,7 @@ function Signup() {
         defaultValues: {
             email: '',
             password: '',
-            role: 'user'
+            role: undefined
         }
     });
 
@@ -85,7 +85,7 @@ function Signup() {
                                     <Input
                                         type="email"
                                         placeholder="Enter your email..."
-                                        disabled={false}
+                                        disabled={loading}
                                         {...field}
                                     />
                                 </FormControl>
@@ -103,7 +103,7 @@ function Signup() {
                                     <Input
                                         type="password"
                                         placeholder="Enter your password..."
-                                        disabled={false}
+                                        disabled={loading}
                                         {...field}
                                     />
                                 </FormControl>
@@ -121,7 +121,7 @@ function Signup() {
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
-                                        disabled={false}
+                                        disabled={loading}
                                     >
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select user role" />
@@ -129,8 +129,8 @@ function Signup() {
                                         <SelectContent>
                                             <SelectGroup>
                                                 <SelectLabel>Roles</SelectLabel>
-                                                <SelectItem value="admin">Admin</SelectItem>
-                                                <SelectItem value="user">User</SelectItem>
+                                                <SelectItem value="ADMIN">Admin</SelectItem>
+                                                <SelectItem value="USER">User</SelectItem>
                                             </SelectGroup>
                                         </SelectContent>
                                     </Select>
@@ -141,7 +141,7 @@ function Signup() {
                     />
 
                     <Button disabled={loading} className="ml-auto w-full" type="submit">
-                        Register
+                        {loading ? 'Loading...' : 'Register'}
                     </Button>
 
                     <div className="mt-4 text-center">
