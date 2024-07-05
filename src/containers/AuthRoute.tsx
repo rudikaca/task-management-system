@@ -7,7 +7,7 @@ interface AuthRouteProps {
 }
 
 const AuthRoute: React.FC<AuthRouteProps> = ({ children }): ReactElement => {
-    const loggedIn = false; // Replace with your actual authentication logic
+    const loggedIn = false;
 
     if (!loggedIn) {
         return children;

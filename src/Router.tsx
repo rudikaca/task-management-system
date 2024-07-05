@@ -19,24 +19,24 @@ export const router = createBrowserRouter([
                 </PrivateRoute>,
             },
             {
-                path: "login",
-                element: <AuthRoute>
-                    <Login />
-                </AuthRoute>,
-            },
-            {
-                path: "signup",
-                element: <AuthRoute>
-                    <Signup />
-                </AuthRoute>,
-            },
-            {
                 path: "sample",
                 element: <PrivateRoute>
                     <Sample />
                 </PrivateRoute>,
             },
         ],
+    },
+    {
+        path: "login",
+        element: <AuthRoute>
+            <Login />
+        </AuthRoute>,
+    },
+    {
+        path: "signup",
+        element: <AuthRoute>
+            <Signup />
+        </AuthRoute>,
     },
     {
         path: "*",

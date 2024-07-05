@@ -5,6 +5,7 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {FormControl, FormField, FormItem, FormLabel, FormMessage, Form} from "@/components/ui/form";
 import { Input } from '@/components/ui/input';
+import {Link} from "react-router-dom";
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Enter a valid email address' }),
@@ -25,11 +26,11 @@ function Login() {
     };
 
     return (
-        <>
+        <div className="flex min-h-screen justify-center items-center">
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
-                    className="w-full space-y-2"
+                    className="w-full space-y-2 max-w-xs"
                 >
                     <FormField
                         control={form.control}
@@ -68,12 +69,19 @@ function Login() {
                         )}
                     />
 
-                    <Button disabled={false} className="ml-auto w-full" type="submit">
+                    <Button disabled={false} className="ml-auto w-full max-w-xs" type="submit">
                         Login
                     </Button>
+
+                    <div className="mt-4 text-center">
+                        <span>Don't have an account? </span>
+                        <Link to="/signup" className="text-blue-500 hover:underline">
+                            Register
+                        </Link>
+                    </div>
                 </form>
             </Form>
-        </>
+        </div>
     );
 }
 
