@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import {Link, useNavigate} from "react-router-dom";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import {auth} from "@/config/firebase-config";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Enter a valid email address' }),
@@ -32,16 +33,23 @@ function Login() {
         setLoading(true);
         try {
             await signInWithEmailAndPassword(auth, data.email, data.password);
+            toast.success('Logged in successfully!');
             navigate('/');
         } catch (error) {
-            console.error('Login error', error);
+            console.error('Login error:', error);
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error('An unknown error occurred. Please try again.');
+            }
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="flex min-h-screen justify-center items-center">
+        <div className="flex min-h-screen justify-center items-center flex-col">
+            <h2 className="text-5xl mb-8">Login</h2>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -84,14 +92,14 @@ function Login() {
                         )}
                     />
 
-                    <Button disabled={false} className="ml-auto w-full max-w-xs" type="submit">
+                    <Button disabled={loading} className="ml-auto w-full max-w-xs" type="submit">
                         Login
                     </Button>
 
                     <div className="mt-4 text-center">
                         <span>Don't have an account? </span>
                         <Link to="/signup" className="text-blue-500 hover:underline">
-                            Register
+                            Register here
                         </Link>
                     </div>
                 </form>

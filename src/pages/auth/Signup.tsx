@@ -18,6 +18,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import {auth, db} from "@/config/firebase-config";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Enter a valid email address' }),
@@ -52,16 +53,23 @@ function Signup() {
                 createdAt: new Date()
             });
 
+            toast.success('Account created successfully!');
             navigate('/');
         } catch (error) {
             console.error('Register error', error);
+            if (error instanceof Error) {
+                toast.error(error.message);
+            } else {
+                toast.error('An unknown error occurred. Please try again.');
+            }
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="flex min-h-screen justify-center items-center">
+        <div className="flex min-h-screen justify-center items-center flex-col">
+            <h2 className="text-5xl mb-8">Register</h2>
             <Form {...form}>
                 <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -139,7 +147,7 @@ function Signup() {
                     <div className="mt-4 text-center">
                         <span>Already have an account? </span>
                         <Link to="/login" className="text-blue-500 hover:underline">
-                            Login
+                            Login here
                         </Link>
                     </div>
                 </form>
