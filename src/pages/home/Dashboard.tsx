@@ -1,5 +1,5 @@
 import { PageHeader, PageHeaderHeading } from "@/components/page-header";
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {KanbanBoard} from "@/components/kanban/KanbanBoard";
 
 export default function Dashboard() {
     return (
@@ -7,12 +7,13 @@ export default function Dashboard() {
             <PageHeader>
                 <PageHeaderHeading>Dashboard</PageHeaderHeading>
             </PageHeader>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Task Management System</CardTitle>
-                    <CardDescription>React + Vite + TypeScript template for building apps with shadcn/ui.</CardDescription>
-                </CardHeader>
-            </Card>
+            <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
+                <div className="flex items-start justify-between">
+                    {/*TODO this will be accessed only from admin users*/}
+                    {/*add new task to board (add button)*/}
+                </div>
+                <KanbanBoard />
+            </div>
         </>
     )
 }

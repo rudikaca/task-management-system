@@ -24,7 +24,6 @@ export function useAuthState(): AuthState {
             try {
                 if (user) {
                     const role = await getUserRole(user.uid);
-                    console.log("ja ku eshte roli", role)
                     const userData = {
                         email: user.email || '',
                         role: role as UserRole
