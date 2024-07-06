@@ -1,0 +1,24 @@
+{
+  "tasks": [
+    {
+      "id": "3079",
+      "title": "test1",
+      "description": "desc of test1",
+      "status": "TODO"
+    }
+  ],
+  "columns": [
+    {
+      "id": "TODO",
+      "title": "Todo"
+    },
+    {
+      "id": "IN_PROGRESS",
+      "title": "In Progress"
+    },
+    {
+      "id": "DONE",
+      "title": "Done"
+    }
+  ]
+}

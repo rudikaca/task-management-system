@@ -9,6 +9,9 @@ git clone https://github.com/rudikaca/task-management-system.git
 cd new-project
 npm install
 npm run dev
+
+Start JSON Server:
+json-server --watch db.json --port 3001
 ```
 
 ## Getting Done

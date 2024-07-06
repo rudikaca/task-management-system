@@ -1,5 +1,5 @@
 import {configureStore} from "@reduxjs/toolkit";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import authReducer from './slices/authSlice';
 import taskReducer from './slices/taskSlice';
 
@@ -15,3 +15,4 @@ export type AppDispatch = typeof store.dispatch
 
 
 export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector = useSelector;

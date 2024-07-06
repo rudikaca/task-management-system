@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
@@ -29,7 +29,7 @@ export function Header() {
     const [open, setOpen] = useState(false)
     const location = useLocation();
 
-    const handleSignOut = () => signOut(auth);
+    const handleSignOut = useCallback(() => signOut(auth), []);
 
     return (
         <header className="supports-backdrop-blur:bg-background/60 sticky top-0 z-50 w-full border-b bg-background/90 backdrop-blur">
@@ -132,9 +132,7 @@ export function Header() {
                                                                     {submenu.title}
                                                                 </NavLink>
                                                             ) : (
-                                                                submenu.label !== '' ? (
-                                                                    null
-                                                                ) : (
+                                                                submenu.label !== '' ? null : (
                                                                     <div className="px-3">
                                                                         {/* <Separator /> */}
                                                                     </div>
@@ -178,7 +176,7 @@ export function Header() {
                                     variant='ghost'
                                     className='relative h-8 w-8 rounded-full'>
                                     <Avatar className='h-8 w-8'>
-                                        <AvatarFallback>SC</AvatarFallback>
+                                        <AvatarFallback>{user?.email.charAt(0).toUpperCase()}</AvatarFallback>
                                     </Avatar>
                                 </Button>
                             </DropdownMenuTrigger>
