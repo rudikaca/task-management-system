@@ -1,7 +1,7 @@
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, User } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth } from "@/config/firebase-config";
-import {UserAuth} from "@/store/slices/authSlice";
 import {getFirestore, doc, getDoc} from "firebase/firestore";
+import {UserAuth} from "@/models/types";
 
 const db = getFirestore();
 

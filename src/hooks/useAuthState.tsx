@@ -2,20 +2,15 @@ import { useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/config/firebase-config';
 import { useAppDispatch } from '@/store';
-import {AuthActions, UserRole} from "@/store/slices/authSlice";
+import {AuthActions} from "@/store/slices/authSlice";
 import {getUserRole} from "@/services/authService";
-
-interface AuthState {
-    isLoading: boolean;
-    isAuthenticated: boolean;
-    user: { email: string; role: UserRole } | null;
-}
+import {AuthState, UserRole} from "@/models/types";
 
 export function useAuthState(): AuthState {
     const dispatch = useAppDispatch();
     const [authState, setAuthState] = useState<AuthState>({
-        isLoading: true,
-        isAuthenticated: false,
+        loading: true,
+        loggedIn: false,
         user: null
     });
 
@@ -31,23 +26,23 @@ export function useAuthState(): AuthState {
                     };
                     dispatch(AuthActions.setUser(userData));
                     setAuthState({
-                        isLoading: false,
-                        isAuthenticated: true,
+                        loading: false,
+                        loggedIn: true,
                         user: userData
                     });
                 } else {
                     dispatch(AuthActions.logoutUser());
                     setAuthState({
-                        isLoading: false,
-                        isAuthenticated: false,
+                        loading: false,
+                        loggedIn: false,
                         user: null
                     });
                 }
             } catch (error) {
                 console.error('Error handling auth state change:', error);
                 setAuthState({
-                    isLoading: false,
-                    isAuthenticated: false,
+                    loading: false,
+                    loggedIn: false,
                     user: null
                 });
             }

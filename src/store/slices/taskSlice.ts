@@ -1,34 +1,6 @@
 import {ActionReducerMapBuilder, createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {Column} from "@/components/kanban/BoardColumn";
 import { fetchTasks, addTask, updateTask, deleteTask, fetchColumns, addColumn, updateColumn, deleteColumn } from '@/store/actions/taskActions';
-import {UniqueIdentifier} from "@dnd-kit/core";
-
-export type Status = 'TODO' | 'IN_PROGRESS' | 'DONE';
-
-const defaultCols = [
-    {
-        id: 'TODO' as const,
-        title: 'Todo'
-    }
-] satisfies Column[];
-
-export type ColumnId = (typeof defaultCols)[number]['id'];
-
-export type Task = {
-    id: UniqueIdentifier;
-    title: string;
-    description: string | undefined;
-    status: Status;
-    assignedTo: string | null;
-};
-
-type TaskState = {
-    tasks: Task[];
-    columns: Column[];
-    draggedTask: string | null;
-    loading: boolean;
-    error?: string;
-};
+import {Column, Task, TaskState} from "@/models/types";
 
 const initialState: TaskState = {
     tasks: [],

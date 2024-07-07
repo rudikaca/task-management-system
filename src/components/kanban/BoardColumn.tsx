@@ -1,4 +1,4 @@
-import { useDndContext, type UniqueIdentifier } from '@dnd-kit/core';
+import { useDndContext } from '@dnd-kit/core';
 import { SortableContext, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cva } from 'class-variance-authority';
@@ -8,34 +8,7 @@ import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader } from '../ui/card';
 import {ColumnActions} from "@/components/kanban/ColumnAction";
 import {TaskCard} from "@/components/kanban/TaskCard";
-
-export interface Column {
-    id: UniqueIdentifier;
-    title: string;
-}
-
-export type Status = 'TODO' | 'IN_PROGRESS' | 'DONE';
-
-export type Task = {
-    id: UniqueIdentifier;
-    title: string;
-    description?: string;
-    status: Status;
-    assignedTo: string | null;
-};
-
-export type ColumnType = 'Column';
-
-export interface ColumnDragData {
-    type: ColumnType;
-    column: Column;
-}
-
-interface BoardColumnProps {
-    column: Column;
-    tasks: Task[];
-    isOverlay?: boolean;
-}
+import {BoardColumnProps, ColumnDragData} from "@/models/types";
 
 export function BoardColumn({ column, tasks, isOverlay }: BoardColumnProps) {
     const tasksIds = useMemo(() => {

@@ -5,7 +5,7 @@ import {Toaster} from "react-hot-toast";
 import useAuthState from "@/hooks/useAuthState";
 
 export default function App() {
-    const {isLoading} = useAuthState();
+    const {loading: isLoading} = useAuthState();
 
     if (isLoading) {
         return <h1 className="flex min-h-screen justify-center items-center">Loading...</h1>;

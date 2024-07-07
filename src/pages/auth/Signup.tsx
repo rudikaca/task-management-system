@@ -1,8 +1,14 @@
 import React, {useState} from 'react';
-import { Button } from "@/components/ui/button";
+import {Link, useNavigate} from 'react-router-dom';
 import { useForm } from 'react-hook-form';
+import {auth, db} from "@/config/firebase-config";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { setDoc, doc } from 'firebase/firestore';
+import { FirebaseError } from 'firebase/app';
+import toast from "react-hot-toast";
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from "@/components/ui/button";
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, Form } from "@/components/ui/form";
 import { Input } from '@/components/ui/input';
 import {
@@ -14,12 +20,6 @@ import {
     SelectTrigger,
     SelectValue
 } from '@/components/ui/select';
-import {Link, useNavigate} from 'react-router-dom';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { setDoc, doc } from 'firebase/firestore';
-import {auth, db} from "@/config/firebase-config";
-import toast from "react-hot-toast";
-import { FirebaseError } from 'firebase/app';
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Enter a valid email address' }),

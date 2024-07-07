@@ -1,3 +1,4 @@
+import { UniqueIdentifier } from '@dnd-kit/core';
 import {RootState, useAppDispatch, useAppSelector} from '@/store';
 import {
     fetchTasks,
@@ -9,10 +10,8 @@ import {
     updateColumn,
     deleteColumn,
 } from '@/store/actions/taskActions';
-import { UniqueIdentifier } from '@dnd-kit/core';
-import {Column} from "@/components/kanban/BoardColumn";
-import {dragTask, setCols, setTasks, Status, Task} from "@/store/slices/taskSlice";
-import {UserRole} from "@/store/slices/authSlice";
+import {dragTask, setCols, setTasks} from "@/store/slices/taskSlice";
+import {Column, Status, Task, UserRole} from "@/models/types";
 
 export const useTaskStore = () => {
     const dispatch = useAppDispatch();

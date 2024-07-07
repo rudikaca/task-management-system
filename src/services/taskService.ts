@@ -1,6 +1,6 @@
-import { api } from './api';
-import {Task} from "@/store/slices/taskSlice";
 import {UniqueIdentifier} from "@dnd-kit/core";
+import { api } from './api';
+import {Task} from "@/models/types";
 
 export type ApiError = {
     code: number,

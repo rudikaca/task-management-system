@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { Task } from '@/store/slices/taskSlice';
-import {Column} from "@/components/kanban/BoardColumn";
+import {Column, Task} from "@/models/types";
 
 const API_URL = 'http://localhost:3001';
 

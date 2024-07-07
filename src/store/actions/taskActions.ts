@@ -1,7 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import * as taskService from '@/services/taskService';
-import {Task} from "@/store/slices/taskSlice";
 import {UniqueIdentifier} from "@dnd-kit/core";
+import * as taskService from '@/services/taskService';
+import {Task} from "@/models/types";
 
 export const fetchTasks = createAsyncThunk(
     'tasks/fetchTasks',

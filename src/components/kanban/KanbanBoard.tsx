@@ -1,7 +1,5 @@
 import {useEffect, useState} from "react";
-import {useTaskStore} from "@/hooks/useTaskStore";
-import {BoardColumn, BoardContainer, Column, Task} from "@/components/kanban/BoardColumn";
-import NewSectionDialog from "@/components/kanban/NewSectionDialog";
+import {useSelector} from "react-redux";
 import {
     DndContext,
     DragEndEvent,
@@ -11,12 +9,13 @@ import {
     useSensor,
     useSensors
 } from "@dnd-kit/core";
-import {Status} from "@/store/slices/taskSlice";
 import {arrayMove, SortableContext} from "@dnd-kit/sortable";
-import {TaskCard} from "@/components/kanban/TaskCard";
-import {useSelector} from "react-redux";
 import {RootState} from "@/store";
-import {UserRole} from "@/store/slices/authSlice";
+import {useTaskStore} from "@/hooks/useTaskStore";
+import NewSectionDialog from "@/components/kanban/NewSectionDialog";
+import {BoardColumn, BoardContainer} from "@/components/kanban/BoardColumn";
+import {TaskCard} from "@/components/kanban/TaskCard";
+import {Column, Status, Task, UserRole} from "@/models/types";
 
 export function KanbanBoard() {
     const {user} = useSelector((state: RootState) => state.auth);
@@ -113,7 +112,7 @@ export function KanbanBoard() {
                         />
                     ))}
                 </SortableContext>
-                <div className="w-[350px]">
+                <div className="w-[200px]">
                     <NewSectionDialog />
                 </div>
             </BoardContainer>

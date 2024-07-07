@@ -1,31 +1,6 @@
 import {ActionReducerMapBuilder, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {loginUser, registerUser} from "@/store/actions/authActions";
-
-export type UserRole = 'ADMIN' | 'USER';
-
-export type UserAuth = {
-    email: string,
-    password: string,
-    role?: UserRole
-}
-
-type AuthState = {
-    loggedIn: boolean,
-    loading: boolean,
-    error?: string,
-    user?: {
-        id: string,
-        email: string,
-        role?: UserRole
-    }
-}
-
-type FirebaseAuthResponse = {
-    id: string,
-    displayName?: "ADMIN" | "USER",
-    email: string,
-    role?: UserRole
-}
+import {AuthState, FirebaseAuthResponse} from "@/models/types";
 
 const initialState: AuthState = {
     loggedIn: false,
@@ -72,7 +47,7 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         setUser(state, action: PayloadAction<FirebaseAuthResponse>) {
-            state.loggedIn = true,
+            state.loggedIn = true
                 state.user = {
                     id: action.payload.id,
                     email: action.payload.email,

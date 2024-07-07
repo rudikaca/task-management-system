@@ -1,22 +1,12 @@
+import { CSS } from '@dnd-kit/utilities';
+import { useSortable } from '@dnd-kit/sortable';
+import { GripVertical } from 'lucide-react';
+import { cva } from 'class-variance-authority';
+import {useUserEmail} from "@/hooks/useUserEmail";
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { useSortable } from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
-import { cva } from 'class-variance-authority';
-import { GripVertical } from 'lucide-react';
 import {Badge} from "@/components/ui/badge";
-import {UniqueIdentifier} from "@dnd-kit/core";
-import {useUserEmail} from "@/hooks/useUserEmail";
-
-export type Status = 'TODO' | 'IN_PROGRESS' | 'DONE';
-
-export type Task = {
-    id: UniqueIdentifier;
-    title: string;
-    description?: string;
-    status: Status;
-    assignedTo: string | null;
-};
+import {Task} from "@/models/types";
 
 interface TaskCardProps {
     task: Task;
