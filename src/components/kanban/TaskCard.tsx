@@ -6,6 +6,7 @@ import { cva } from 'class-variance-authority';
 import { GripVertical } from 'lucide-react';
 import {Badge} from "@/components/ui/badge";
 import {UniqueIdentifier} from "@dnd-kit/core";
+import {useUserEmail} from "@/hooks/useUserEmail";
 
 export type Status = 'TODO' | 'IN_PROGRESS' | 'DONE';
 
@@ -14,6 +15,7 @@ export type Task = {
     title: string;
     description?: string;
     status: Status;
+    assignedTo: string | null;
 };
 
 interface TaskCardProps {
@@ -29,6 +31,7 @@ export interface TaskDragData {
 }
 
 export function TaskCard({ task, isOverlay }: TaskCardProps) {
+    const { userEmail, loading } = useUserEmail(task?.assignedTo || null);
     const {
         setNodeRef,
         attributes,
@@ -84,7 +87,19 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
                 </Badge>
             </CardHeader>
             <CardContent className="whitespace-pre-wrap px-3 pb-6 pt-3 text-left">
-                {task.title}
+                <h3 className="text-lg font-semibold mb-2">{task.title}</h3>
+                {task.description && (
+                    <p className="text-sm">{task.description}</p>
+                )}
+                {task.assignedTo === null ? (
+                    <p className="text-sm text-gray-500 mb-2">Not assigned</p>
+                ) : loading ? (
+                    <p className="text-sm text-gray-500">Loading...</p>
+                ) : userEmail ? (
+                    <p className="text-sm text-gray-500 mb-2">
+                        <b>Assigned to:</b> {userEmail}
+                    </p>
+                ) : null}
             </CardContent>
         </Card>
     );

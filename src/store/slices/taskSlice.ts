@@ -18,7 +18,8 @@ export type Task = {
     id: UniqueIdentifier;
     title: string;
     description: string | undefined;
-    status: Status
+    status: Status;
+    assignedTo: string | null;
 };
 
 type TaskState = {

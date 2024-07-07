@@ -28,7 +28,7 @@ export const useTaskStore = () => {
         loading,
         error,
         fetchTasks: () => dispatch(fetchTasks()),
-        addTask: (title: string, description?: string, status: Status = 'TODO') => dispatch(addTask({ title, description, status })),
+        addTask: (title: string, description?: string, status: Status = 'TODO', assignedTo: string | null = null) => dispatch(addTask({ title, description, status, assignedTo: assignedTo || null })),
         updateTask: (task: Task) => dispatch(updateTask(task)),
         deleteTask: (id: UniqueIdentifier) => dispatch(deleteTask(id)),
         fetchColumns: () => dispatch(fetchColumns()),

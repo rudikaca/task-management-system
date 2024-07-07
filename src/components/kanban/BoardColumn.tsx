@@ -21,6 +21,7 @@ export type Task = {
     title: string;
     description?: string;
     status: Status;
+    assignedTo: string | null;
 };
 
 export type ColumnType = 'Column';
