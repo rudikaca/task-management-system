@@ -41,7 +41,7 @@ function Login() {
             if (error instanceof Error) {
                 toast.error(error.message);
             } else {
-                toast.error('An unknown error occurred. Please try again.');
+                toast.error('Invalid Credentials');
             }
         } finally {
             setLoading(false);

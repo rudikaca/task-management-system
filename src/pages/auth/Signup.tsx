@@ -19,6 +19,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { setDoc, doc } from 'firebase/firestore';
 import {auth, db} from "@/config/firebase-config";
 import toast from "react-hot-toast";
+import { FirebaseError } from 'firebase/app';
 
 const formSchema = z.object({
     email: z.string().email({ message: 'Enter a valid email address' }),
@@ -57,8 +58,23 @@ function Signup() {
             navigate('/');
         } catch (error) {
             console.error('Register error', error);
-            if (error instanceof Error) {
-                toast.error(error.message);
+            if (error instanceof FirebaseError) {
+                // Handle Firebase-specific errors
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        toast.error('Email is already in use.');
+                        break;
+                    case 'auth/invalid-email':
+                        toast.error('Invalid email address.');
+                        break;
+                    case 'auth/weak-password':
+                        toast.error('Password is too weak.');
+                        break;
+                    default:
+                        toast.error(`Registration failed: ${error.message}`);
+                }
+            } else if (error instanceof Error) {
+                toast.error(`Registration failed: ${error.message}`);
             } else {
                 toast.error('An unknown error occurred. Please try again.');
             }
