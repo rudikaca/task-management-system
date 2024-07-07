@@ -21,7 +21,6 @@ export function useUserEmail(userId: string | null) {
                 const userDoc = await getDoc(doc(db, 'users', userId));
                 if (userDoc.exists()) {
                     setUserEmail(userDoc.data().email);
-                    console.log(userDoc.data())
                 } else {
                     setUserEmail(null);
                 }

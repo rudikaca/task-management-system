@@ -12,6 +12,7 @@ import {
 import { UniqueIdentifier } from '@dnd-kit/core';
 import {Column} from "@/components/kanban/BoardColumn";
 import {dragTask, setCols, setTasks, Status, Task} from "@/store/slices/taskSlice";
+import {UserRole} from "@/store/slices/authSlice";
 
 export const useTaskStore = () => {
     const dispatch = useAppDispatch();
@@ -21,14 +22,24 @@ export const useTaskStore = () => {
     const loading = useAppSelector((state: RootState) => state.tasks.loading);
     const error = useAppSelector((state: RootState) => state.tasks.error);
 
+    const getFilteredTasks = (userRole: UserRole | undefined, userId: string | undefined) => {
+        if (userRole === 'ADMIN') {
+            return tasks;
+        } else {
+            return tasks.filter(task => task.assignedTo === userId);
+        }
+    }
+
     return {
         tasks,
         columns,
         draggedTask,
         loading,
         error,
+        getFilteredTasks,
         fetchTasks: () => dispatch(fetchTasks()),
-        addTask: (title: string, description?: string, status: Status = 'TODO', assignedTo: string | null = null) => dispatch(addTask({ title, description, status, assignedTo: assignedTo || null })),
+        addTask: (title: string, description?: string, status: Status = 'TODO', assignedTo: string | null = null) =>
+            dispatch(addTask({ title, description, status, assignedTo: assignedTo || null })),
         updateTask: (task: Task) => dispatch(updateTask(task)),
         deleteTask: (id: UniqueIdentifier) => dispatch(deleteTask(id)),
         fetchColumns: () => dispatch(fetchColumns()),

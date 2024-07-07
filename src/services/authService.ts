@@ -26,6 +26,7 @@ export const login = async (user: UserAuth, rejectWithValue: any) => {
         // passing serializable data to Redux, which resolve the serialization errors
         return {
             // ...userCredential.user,
+            id: userCredential.user.uid,
             email: userCredential.user.email,
             displayName: role
         };

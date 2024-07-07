@@ -14,13 +14,15 @@ type AuthState = {
     loading: boolean,
     error?: string,
     user?: {
+        id: string,
         email: string,
         role?: UserRole
     }
 }
 
 type FirebaseAuthResponse = {
-    displayName?: "ADMIN" | "USER";
+    id: string,
+    displayName?: "ADMIN" | "USER",
     email: string,
     role?: UserRole
 }
@@ -43,6 +45,7 @@ const setLoginRejected = (state: AuthState, action: PayloadAction<string>): void
 const setLoginFulfilled = (state: AuthState, action: PayloadAction<FirebaseAuthResponse>): void => {
     state.loading = false
     state.user = {
+        id: action.payload.id,
         email: action.payload.email,
         role: action.payload.displayName
     }
@@ -58,6 +61,7 @@ const setRegisterFulfilled = (state: AuthState, action: PayloadAction<FirebaseAu
     state.loading = false
     state.loggedIn = true
     state.user = {
+        id: action.payload.id,
         email: action.payload.email,
         role: action.payload.role
     }
@@ -70,6 +74,7 @@ export const authSlice = createSlice({
         setUser(state, action: PayloadAction<FirebaseAuthResponse>) {
             state.loggedIn = true,
                 state.user = {
+                    id: action.payload.id,
                     email: action.payload.email,
                     role: action.payload.role
                 }

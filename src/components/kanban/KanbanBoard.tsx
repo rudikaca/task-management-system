@@ -14,8 +14,13 @@ import {
 import {Status} from "@/store/slices/taskSlice";
 import {arrayMove, SortableContext} from "@dnd-kit/sortable";
 import {TaskCard} from "@/components/kanban/TaskCard";
+import {useSelector} from "react-redux";
+import {RootState} from "@/store";
+import {UserRole} from "@/store/slices/authSlice";
 
 export function KanbanBoard() {
+    const {user} = useSelector((state: RootState) => state.auth);
+
     const {
         tasks,
         columns,
@@ -23,7 +28,8 @@ export function KanbanBoard() {
         fetchColumns,
         updateTask,
         setCols,
-        setTasks
+        setTasks,
+        getFilteredTasks
     } = useTaskStore();
 
     const [activeTask, setActiveTask] = useState<Task | null>(null);
@@ -33,6 +39,8 @@ export function KanbanBoard() {
         fetchTasks();
         fetchColumns();
     }, []);
+
+    const filteredTasks = getFilteredTasks(user?.role as UserRole, user?.id)
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -101,7 +109,7 @@ export function KanbanBoard() {
                         <BoardColumn
                             key={column.id}
                             column={column}
-                            tasks={tasks.filter((task) => task.status === column.id)}
+                            tasks={filteredTasks.filter((task) => task.status === column.id)}
                         />
                     ))}
                 </SortableContext>
