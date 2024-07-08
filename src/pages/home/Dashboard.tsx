@@ -1,5 +1,6 @@
-import { useState } from "react";
+import {useCallback, useState} from "react";
 import { useSelector } from "react-redux";
+import debounce from 'lodash/debounce';
 import { RootState } from "@/store";
 import { TaskPriority } from "@/models/types";
 import { PageHeader, PageHeaderHeading } from "@/components/page-header";
@@ -11,7 +12,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 export default function Dashboard() {
     const {user} = useSelector((state: RootState) => state.auth);
     const [searchTerm, setSearchTerm] = useState('');
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
     const [priorityFilter, setPriorityFilter] = useState<TaskPriority | 'ALL'>('ALL');
+
+    const debouncedSearch = useCallback(
+        debounce((value: string) => {
+            setDebouncedSearchTerm(value)
+        }, 300), []
+    );
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        setSearchTerm(value);
+        debouncedSearch(value);
+    };
+
+    const handlePriorityChange = (value: string) => {
+        setPriorityFilter(value as TaskPriority | 'ALL');
+    };
 
     return (
         <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">
@@ -24,11 +42,11 @@ export default function Dashboard() {
                         placeholder="Search tasks..."
                         className="w-64"
                         value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        onChange={handleSearchChange}
                     />
                     <Select
                         value={priorityFilter}
-                        onValueChange={(value: TaskPriority | 'ALL') => setPriorityFilter(value)}
+                        onValueChange={handlePriorityChange}
                     >
                         <SelectTrigger className="w-[140px]">
                             <SelectValue placeholder="Priority" />
@@ -45,7 +63,7 @@ export default function Dashboard() {
                     )}
                 </div>
             </div>
-            <KanbanBoard searchTerm={searchTerm} priorityFilter={priorityFilter} />
+            <KanbanBoard searchTerm={debouncedSearchTerm} priorityFilter={priorityFilter} />
         </div>
     )
 }
