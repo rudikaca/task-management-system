@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {useSelector} from "react-redux";
 import {
     DndContext,
@@ -11,13 +11,18 @@ import {
 } from "@dnd-kit/core";
 import {arrayMove, SortableContext} from "@dnd-kit/sortable";
 import {RootState} from "@/store";
+import {Column, Status, Task, TaskPriority} from "@/models/types";
 import {useTaskStore} from "@/hooks/useTaskStore";
 import NewSectionDialog from "@/components/kanban/NewSectionDialog";
 import {BoardColumn, BoardContainer} from "@/components/kanban/BoardColumn";
 import {TaskCard} from "@/components/kanban/TaskCard";
-import {Column, Status, Task, UserRole} from "@/models/types";
 
-export function KanbanBoard() {
+interface KanbanBoardProps {
+    searchTerm: string;
+    priorityFilter: TaskPriority | 'ALL';
+}
+
+export function KanbanBoard({ searchTerm, priorityFilter }: KanbanBoardProps) {
     const {user} = useSelector((state: RootState) => state.auth);
 
     const {
@@ -34,12 +39,18 @@ export function KanbanBoard() {
     const [activeTask, setActiveTask] = useState<Task | null>(null);
     const [activeColumn, setActiveColumn] = useState<Column | null>(null);
 
+    const filteredTasks = useMemo(() => {
+        const userTasks = getFilteredTasks(user?.role, user?.id);
+        return userTasks.filter(task =>
+            task.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+            (priorityFilter === 'ALL' || task.priority === priorityFilter)
+        );
+    }, [tasks, user, searchTerm, priorityFilter, getFilteredTasks]);
+
     useEffect(() => {
         fetchTasks();
         fetchColumns();
     }, []);
-
-    const filteredTasks = getFilteredTasks(user?.role as UserRole, user?.id)
 
     const sensors = useSensors(
         useSensor(PointerSensor, {
@@ -121,7 +132,7 @@ export function KanbanBoard() {
                 {activeColumn && (
                     <BoardColumn
                         column={activeColumn}
-                        tasks={tasks.filter((task) => task.status === activeColumn.id)}
+                        tasks={filteredTasks.filter((task) => task.status === activeColumn.id)}
                         isOverlay
                     />
                 )}
