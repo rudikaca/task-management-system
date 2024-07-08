@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { useTaskStore } from "@/hooks/useTaskStore";
+import {Task, TaskPriority} from "@/models/types";
 import { Button } from '@/components/ui/button';
 import {
     Dialog, DialogClose,
@@ -10,10 +13,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '../ui/textarea';
-import { useTaskStore } from "@/hooks/useTaskStore";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {Task, TaskPriority} from "@/models/types";
 
 interface User {
     id: string;
@@ -30,10 +30,10 @@ interface NewTaskDialogProps {
 export default function NewTaskDialog({ open, onOpenChange, taskToEdit }: NewTaskDialogProps) {
     const { addTask, updateTask } = useTaskStore();
     const [users, setUsers] = useState<User[]>([]);
-    const [title, setTitle] = useState(taskToEdit?.title || '');
-    const [description, setDescription] = useState(taskToEdit?.description || '');
-    const [assignedTo, setAssignedTo] = useState(taskToEdit?.assignedTo || '');
-    const [priority, setPriority] = useState(taskToEdit?.priority);
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [assignedTo, setAssignedTo] = useState('');
+    const [priority, setPriority] = useState<TaskPriority>('LOW');
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -49,7 +49,19 @@ export default function NewTaskDialog({ open, onOpenChange, taskToEdit }: NewTas
         };
 
         fetchUsers();
-    }, []);
+
+        if (taskToEdit) {
+            setTitle(taskToEdit.title);
+            setDescription(taskToEdit.description || '');
+            setAssignedTo(taskToEdit.assignedTo || '');
+            setPriority(taskToEdit.priority || 'LOW');
+        } else {
+            setTitle('');
+            setDescription('');
+            setAssignedTo('');
+            setPriority('LOW');
+        }
+    }, [taskToEdit]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -74,6 +86,13 @@ export default function NewTaskDialog({ open, onOpenChange, taskToEdit }: NewTas
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
+            {!taskToEdit && (
+            <DialogTrigger asChild>
+                <Button variant="secondary" size="sm">
+                    ＋ Add New Task
+                </Button>
+            </DialogTrigger>
+            )}
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>{taskToEdit ? 'Edit Task' : 'Add New Task'}</DialogTitle>
@@ -147,11 +166,6 @@ export default function NewTaskDialog({ open, onOpenChange, taskToEdit }: NewTas
                     </DialogClose>
                 </DialogFooter>
             </DialogContent>
-            {!taskToEdit ? <DialogTrigger asChild>
-                <Button type="submit" size="sm" form="todo-form">
-                    Add Task
-                </Button>
-            </DialogTrigger> : null}
         </Dialog>
     );
 }
