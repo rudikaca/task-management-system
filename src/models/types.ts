@@ -38,12 +38,15 @@ const defaultCols = [
 
 export type ColumnId = (typeof defaultCols)[number]['id'];
 
+export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
+
 export type Task = {
     id: UniqueIdentifier;
     title: string;
     description: string | undefined;
     status: Status;
     assignedTo: string | null;
+    priority?: TaskPriority
 };
 
 export type TaskState = {

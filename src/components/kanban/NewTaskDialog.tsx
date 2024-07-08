@@ -13,7 +13,7 @@ import { Textarea } from '../ui/textarea';
 import { useTaskStore } from "@/hooks/useTaskStore";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Task } from "@/models/types";
+import {Task, TaskPriority} from "@/models/types";
 
 interface User {
     id: string;
@@ -33,6 +33,7 @@ export default function NewTaskDialog({ open, onOpenChange, taskToEdit }: NewTas
     const [title, setTitle] = useState(taskToEdit?.title || '');
     const [description, setDescription] = useState(taskToEdit?.description || '');
     const [assignedTo, setAssignedTo] = useState(taskToEdit?.assignedTo || '');
+    const [priority, setPriority] = useState(taskToEdit?.priority);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -59,10 +60,11 @@ export default function NewTaskDialog({ open, onOpenChange, taskToEdit }: NewTas
                 title,
                 description,
                 assignedTo: assignedTo || null,
+                priority
             };
             await updateTask(updatedTask);
         } else {
-            await addTask(title, description, 'TODO', assignedTo);
+            await addTask(title, description, 'TODO', assignedTo, priority);
         }
 
         if (onOpenChange) {
@@ -115,6 +117,24 @@ export default function NewTaskDialog({ open, onOpenChange, taskToEdit }: NewTas
                                         {user.email} ({user.role})
                                     </SelectItem>
                                 ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Select name="priority" value={priority} onValueChange={(value: TaskPriority) => setPriority(value)}>
+                            <SelectTrigger className="col-span-4">
+                                <SelectValue placeholder="Set priority" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="LOW">
+                                    Low
+                                </SelectItem>
+                                <SelectItem value="MEDIUM">
+                                    Medium
+                                </SelectItem>
+                                <SelectItem value="HIGH">
+                                    High
+                                </SelectItem>
                             </SelectContent>
                         </Select>
                     </div>

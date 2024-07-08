@@ -92,7 +92,7 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
                         <GripVertical />
                     </Button>
                     <Badge variant={'outline'} className="ml-auto font-semibold">
-                        Task
+                        {task.priority}
                     </Badge>
                     <DropdownMenu modal={false}>
                         <DropdownMenuTrigger asChild>

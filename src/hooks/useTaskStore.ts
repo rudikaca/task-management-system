@@ -11,7 +11,7 @@ import {
     deleteColumn,
 } from '@/store/actions/taskActions';
 import {dragTask, setCols, setTasks} from "@/store/slices/taskSlice";
-import {Column, Status, Task, UserRole} from "@/models/types";
+import {Column, Status, Task, TaskPriority, UserRole} from "@/models/types";
 
 export const useTaskStore = () => {
     const dispatch = useAppDispatch();
@@ -37,8 +37,8 @@ export const useTaskStore = () => {
         error,
         getFilteredTasks,
         fetchTasks: () => dispatch(fetchTasks()),
-        addTask: (title: string, description?: string, status: Status = 'TODO', assignedTo: string | null = null) =>
-            dispatch(addTask({ title, description, status, assignedTo: assignedTo || null })),
+        addTask: (title: string, description?: string, status: Status = 'TODO', assignedTo: string | null = null, priority: TaskPriority = 'LOW') =>
+            dispatch(addTask({ title, description, status, assignedTo: assignedTo || null, priority })),
         updateTask: (task: Task) => dispatch(updateTask(task)),
         deleteTask: (id: UniqueIdentifier) => dispatch(deleteTask(id)),
         fetchColumns: () => dispatch(fetchColumns()),

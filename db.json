@@ -1,27 +1,5 @@
 {
-  "tasks": [
-    {
-      "id": "4137",
-      "title": "1212",
-      "description": "1212",
-      "status": "IN_PROGRESS",
-      "assignedTo": "ENGTYwmB1Tet1NQKrfeRCMkANkv2"
-    },
-    {
-      "id": "7852",
-      "title": "33434",
-      "description": "43434",
-      "status": "TODO",
-      "assignedTo": "HvawKJ7QaGfatyzucOBLk6Zr3No2"
-    },
-    {
-      "id": "6bcb",
-      "title": "787878",
-      "description": "878787",
-      "status": "TODO",
-      "assignedTo": "HvawKJ7QaGfatyzucOBLk6Zr3No2"
-    }
-  ],
+  "tasks": [],
   "columns": [
     {
       "id": "TODO",
