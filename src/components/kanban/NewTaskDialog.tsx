@@ -1,19 +1,19 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { Button } from '@/components/ui/button';
 import {
-    Dialog,
+    Dialog, DialogClose,
     DialogContent,
     DialogDescription,
     DialogFooter,
     DialogHeader,
-    DialogTitle,
-    DialogTrigger
+    DialogTitle, DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '../ui/textarea';
-import {useTaskStore} from "@/hooks/useTaskStore";
-import {getFirestore, collection, getDocs} from "firebase/firestore";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import { useTaskStore } from "@/hooks/useTaskStore";
+import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Task } from "@/models/types";
 
 interface User {
     id: string;
@@ -21,9 +21,18 @@ interface User {
     role: string;
 }
 
-export default function NewTaskDialog() {
-    const {addTask} = useTaskStore();
+interface NewTaskDialogProps {
+    open?: boolean;
+    onOpenChange?: (open: boolean) => void;
+    taskToEdit?: Task;
+}
+
+export default function NewTaskDialog({ open, onOpenChange, taskToEdit }: NewTaskDialogProps) {
+    const { addTask, updateTask } = useTaskStore();
     const [users, setUsers] = useState<User[]>([]);
+    const [title, setTitle] = useState(taskToEdit?.title || '');
+    const [description, setDescription] = useState(taskToEdit?.description || '');
+    const [assignedTo, setAssignedTo] = useState(taskToEdit?.assignedTo || '');
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -40,33 +49,38 @@ export default function NewTaskDialog() {
 
         fetchUsers();
     }, []);
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const form = e.currentTarget;
-        const formData = new FormData(form);
-        const { title, description, assignedTo } = Object.fromEntries(formData);
+        if (taskToEdit) {
+            const updatedTask: Task = {
+                ...taskToEdit,
+                title,
+                description,
+                assignedTo: assignedTo || null,
+            };
+            await updateTask(updatedTask);
+        } else {
+            await addTask(title, description, 'TODO', assignedTo);
+        }
 
-        if (typeof title !== 'string' || typeof description !== 'string'|| typeof assignedTo !== 'string') return;
-        addTask(title, description, 'TODO', assignedTo);
+        if (onOpenChange) {
+            onOpenChange(false);
+        }
     };
 
     return (
-        <Dialog>
-            <DialogTrigger asChild>
-                <Button variant="secondary" size="sm">
-                    ＋ Add New Task
-                </Button>
-            </DialogTrigger>
+        <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
-                    <DialogTitle>Add New Task</DialogTitle>
+                    <DialogTitle>{taskToEdit ? 'Edit Task' : 'Add New Task'}</DialogTitle>
                     <DialogDescription>
-                        What do you want to get done today?
+                        {taskToEdit ? 'Edit your task details.' : 'What do you want to get done today?'}
                     </DialogDescription>
                 </DialogHeader>
                 <form
-                    id="todo-form"
+                    id="task-form"
                     className="grid gap-4 py-4"
                     onSubmit={handleSubmit}
                 >
@@ -74,8 +88,10 @@ export default function NewTaskDialog() {
                         <Input
                             id="title"
                             name="title"
-                            placeholder="Todo title..."
+                            placeholder="Task title..."
                             className="col-span-4"
+                            value={title}
+                            onChange={(e) => setTitle(e.target.value)}
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
@@ -84,10 +100,12 @@ export default function NewTaskDialog() {
                             name="description"
                             placeholder="Description..."
                             className="col-span-4"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
                     </div>
                     <div className="grid grid-cols-4 items-center gap-4">
-                        <Select name="assignedTo">
+                        <Select name="assignedTo" value={assignedTo} onValueChange={setAssignedTo}>
                             <SelectTrigger className="col-span-4">
                                 <SelectValue placeholder="Assign to..." />
                             </SelectTrigger>
@@ -102,13 +120,18 @@ export default function NewTaskDialog() {
                     </div>
                 </form>
                 <DialogFooter>
-                    <DialogTrigger asChild>
-                        <Button type="submit" size="sm" form="todo-form">
-                            Add Task
+                    <DialogClose asChild>
+                        <Button type="submit" size="sm" form="task-form">
+                            {taskToEdit ? 'Update Task' : 'Add Task'}
                         </Button>
-                    </DialogTrigger>
+                    </DialogClose>
                 </DialogFooter>
             </DialogContent>
+            {!taskToEdit ? <DialogTrigger asChild>
+                <Button type="submit" size="sm" form="todo-form">
+                    Add Task
+                </Button>
+            </DialogTrigger> : null}
         </Dialog>
     );
 }

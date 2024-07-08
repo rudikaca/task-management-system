@@ -17,6 +17,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle
 } from "@/components/ui/alert-dialog";
+import NewTaskDialog from "@/components/kanban/NewTaskDialog";
 
 interface TaskCardProps {
     task: Task;
@@ -52,6 +53,10 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
             roleDescription: 'Task'
         }
     });
+
+    const onModalClose = ()=> {
+        setShowEditDialog(false)
+    }
 
     const style = {
         transition,
@@ -89,7 +94,7 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
                     <Badge variant={'outline'} className="ml-auto font-semibold">
                         Task
                     </Badge>
-                    <DropdownMenu>
+                    <DropdownMenu modal={false}>
                         <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0">
                                 <span className="sr-only">Open menu</span>
@@ -144,6 +149,12 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
+
+            <NewTaskDialog
+                open={showEditDialog}
+                onOpenChange={onModalClose}
+                taskToEdit={task}
+            />
         </>
     );
 }
