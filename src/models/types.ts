@@ -26,17 +26,7 @@ export type FirebaseAuthResponse = {
     role?: UserRole
 }
 
-
 export type Status = 'TODO' | 'IN_PROGRESS' | 'DONE';
-
-const defaultCols = [
-    {
-        id: 'TODO' as const,
-        title: 'Todo'
-    }
-] satisfies Column[];
-
-export type ColumnId = (typeof defaultCols)[number]['id'];
 
 export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
 

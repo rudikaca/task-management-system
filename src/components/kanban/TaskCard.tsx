@@ -91,7 +91,15 @@ export function TaskCard({ task, isOverlay }: TaskCardProps) {
                         <span className="sr-only">Move task</span>
                         <GripVertical />
                     </Button>
-                    <Badge variant={'outline'} className="ml-auto font-semibold">
+                    <Badge
+                        variant={'outline'}
+                        className={`ml-auto font-semibold ${
+                            task.priority === 'LOW' ? 'border-green-500 text-green-500' :
+                                task.priority === 'MEDIUM' ? 'border-orange-300 text-orange-300' :
+                                    task.priority === 'HIGH' ? 'border-red-500 text-red-500' :
+                                        ''
+                        }`}
+                    >
                         {task.priority}
                     </Badge>
                     <DropdownMenu modal={false}>

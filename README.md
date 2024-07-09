@@ -1,70 +1,32 @@
-# React Shadcn Starter
-
-React + Vite + TypeScript template for building apps with shadcn/ui.
+# Task Management System
 
 ## Getting Started
 
-```
-git clone https://github.com/rudikaca/task-management-system.git
-cd new-project
-npm install
-npm run dev
+To get the frontend running locally:
 
-Start JSON Server:
-json-server --watch db.json --port 3001
-```
+* Clone this repo
+* `npm install` to install all required dependencies
+* `npm run dev` to start the local server (this project uses [https://vitejs.dev/](https://vitejs.dev))
+* `json-server --watch db.json --port 3001` to start JSON Server
 
-## Getting Done
-
-- [x] Single page app with navigation and responsive layout
-
-- [x] Customizable configuration `/config`
-
-- [x] Simple starting page/feature `/pages`
-
-- [x] Github action deploy github pages
-
-
-### Auto Deploy
-- change file `.github/workflows/build-and-deploy.yml`
-- Comment on `workflow_dispatch`
-- Uncomment on `push`
-```yaml
-# on:
-#   workflow_dispatch:
-on:
-  push:
-    branches: ["main"]
-```
-
-## Features
+## Packages used
 
 - React + Vite + TypeScript
-- Tailwind CSS
+- [Redux(toolkit)](https://redux-toolkit.js.org/)
+- [Axios](https://axios-http.com/docs/intro)
+- [tailwind CSS](https://tailwindcss.com/docs/configuration)
 - [react-router-dom](https://www.npmjs.com/package/react-router-dom)
 - [shadcn-ui](https://github.com/shadcn-ui/ui/)
 - [radix-ui/icons](https://www.radix-ui.com/icons)
+- [@dnd-kit/core](https://dndkit.com/)
 
-## Project Structure
+## Functionalities:
 
-```
-react-shadcn-starter/
-├── public/            # Public assets
-├── src/               # Application source code
-│   ├── components/    # React components
-│   │   └── ui/        # shadc/ui components
-│   │   └── layouts/   # layouts components
-│   ├── context/       # contexts components
-│   ├── config/        # Config data
-│   ├── hook/          # Custom hooks
-│   ├── lib/           # Utility functions
-│   ├── pages/         # pages/features components
-│   ├── App.tsx        # Application entry point
-│   ├── index.tsx      # Main rendering file
-│   └── Router.tsx     # Routes component
-├── index.html         # HTML entry point
-├── postcss.config.js  # PostCSS configuration
-├── tailwind.config.js # Tailwind CSS configuration
-├── tsconfig.json      # TypeScript configuration
-└── vite.config.ts     # Vite configuration
-```
+* Authentication with firebase
+* Register like Admin or User
+* When user login can see his own tasks assigned by admin
+* An admin can create tasks and assign the task to all users and can see on the dashboard all tasks that exist
+* The tasks are stored on the project file db.json simulated by json-server mock backend
+* Admin and User can edit and delete the tasks showed on dashboard
+* User can move the task from one column to the other (TODO -> IN PROGRESS -> DONE)
+* On dashboard the user can search for any task by title and also can filter by priority
