@@ -88,7 +88,7 @@ export default function NewTaskDialog({ open, onOpenChange, taskToEdit }: NewTas
         <Dialog open={open} onOpenChange={onOpenChange}>
             {!taskToEdit && (
             <DialogTrigger asChild>
-                <Button variant="secondary" size="sm">
+                <Button variant="secondary" size="sm" className="w-[170px]">
                     ＋ Add New Task
                 </Button>
             </DialogTrigger>

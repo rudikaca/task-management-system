@@ -7,7 +7,8 @@ interface NavItem {
     disabled?: boolean
     external?: boolean
     icon?: keyof typeof Icons
-    label?: string
+    label?: string,
+    adminOnly?: boolean
 }
 
 interface NavItemWithChildren extends NavItem {
@@ -20,13 +21,9 @@ export const mainMenu: NavItemWithChildren[] = [
         to: '',
     },
     {
-        title: 'Dropdown',
-        items: [
-            {
-                title: 'Sample',
-                to: '/sample',
-            },
-        ]
+        title: 'Reports',
+        to: '/reports',
+        adminOnly: true
     },
 ]
 

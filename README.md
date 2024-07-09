@@ -6,6 +6,7 @@ To get the frontend running locally:
 
 * Clone this repo
 * `npm install` to install all required dependencies
+* `npm install json-server` to install JSON Server (nvm install v18.20.4)
 * `npm run dev` to start the local server (this project uses [https://vitejs.dev/](https://vitejs.dev))
 * `json-server --watch db.json --port 3001` to start JSON Server
 

@@ -3,9 +3,10 @@ import { createBrowserRouter } from "react-router-dom";
 import { Applayout } from "./components/layouts/AppLayout";
 import NoMatch from "./pages/NoMatch";
 import Dashboard from "./pages/home/Dashboard";
-import Sample from "./pages/home/Sample";
-import {PrivateRoute, AuthRoute} from "@/containers";
+import Reports from "./pages/home/Reports";
+import {PrivateRoute, AuthRoute, AdminRoute} from "@/containers";
 import {Login, Signup} from "@/pages/auth";
+import {paths} from "@/constants/paths";
 
 export const router = createBrowserRouter([
     {
@@ -13,27 +14,27 @@ export const router = createBrowserRouter([
         element: <Applayout />,
         children: [
             {
-                path: "",
+                path: `${paths.dashboard}`,
                 element: <PrivateRoute>
                     <Dashboard />
                 </PrivateRoute>,
             },
             {
-                path: "sample",
-                element: <PrivateRoute>
-                    <Sample />
-                </PrivateRoute>,
+                path: `${paths.reports}`,
+                element: <AdminRoute>
+                    <Reports />
+                </AdminRoute>,
             },
         ],
     },
     {
-        path: "login",
+        path: `${paths.login}`,
         element: <AuthRoute>
             <Login />
         </AuthRoute>,
     },
     {
-        path: "signup",
+        path: `${paths.signup}`,
         element: <AuthRoute>
             <Signup />
         </AuthRoute>,

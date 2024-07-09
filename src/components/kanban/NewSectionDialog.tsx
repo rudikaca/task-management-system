@@ -28,7 +28,7 @@ export default function NewSectionDialog() {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="secondary" size="lg" className="w-full">
+                <Button variant="secondary" size="sm" className="w-full">
                     ＋ Add New Section
                 </Button>
             </DialogTrigger>
