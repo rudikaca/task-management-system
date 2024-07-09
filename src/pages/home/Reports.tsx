@@ -4,6 +4,7 @@ import { useTaskStore } from "@/hooks/useTaskStore";
 import { useUsers } from "@/hooks/useUsers";
 import { UserRole, TaskPriority } from "@/models/types";
 import styles from './Reports.module.scss';
+import {useTranslation} from "react-i18next";
 
 interface UserReport {
     id: string;
@@ -15,6 +16,7 @@ interface UserReport {
 }
 
 export default function Reports() {
+    const { t } = useTranslation();
     const { tasks, loading: tasksLoading } = useTaskStore();
     const { users, loading: usersLoading } = useUsers();
     const {fetchTasks} = useTaskStore();
@@ -50,26 +52,26 @@ export default function Reports() {
     }, [users, tasks]);
 
     if (tasksLoading || usersLoading) {
-        return <div className={styles.loading}>Loading...</div>;
+        return <div className={styles.loading}>{t('reports.loading')}</div>;
     }
 
     return (
         <div className={styles.reportsContainer}>
             <PageHeader>
-                <PageHeaderHeading>Reports</PageHeaderHeading>
+                <PageHeaderHeading>{t('reports.title')}</PageHeaderHeading>
             </PageHeader>
 
             <div className={styles.tableContainer}>
-                <h3 className={styles.tableTitle}>All Members with Specific Task Counts</h3>
+                <h3 className={styles.tableTitle}>{t('reports.allMembers')}</h3>
                 <div className={styles.tableWrapper}>
                     <table className={styles.table}>
                         <thead>
                         <tr>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Low Priority</th>
-                            <th>Medium Priority</th>
-                            <th>High Priority</th>
+                            <th>{t('reports.email')}</th>
+                            <th>{t('reports.role')}</th>
+                            <th>{t('reports.lowPriority')}</th>
+                            <th>{t('reports.mediumPriority')}</th>
+                            <th>{t('reports.highPriority')}</th>
                         </tr>
                         </thead>
                         <tbody>

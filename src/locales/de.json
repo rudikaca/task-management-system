@@ -1,0 +1,12 @@
+{
+  "reports": {
+    "title": "Berichte",
+    "allMembers": "Alle Mitglieder mit spezifischen Aufgabenzählungen",
+    "email": "E-Mail",
+    "role": "Rolle",
+    "lowPriority": "Niedrige Priorität",
+    "mediumPriority": "Mittlere Priorität",
+    "highPriority": "Hohe Priorität",
+    "loading": "Wird geladen..."
+  }
+}

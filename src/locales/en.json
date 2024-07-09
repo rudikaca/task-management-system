@@ -1,0 +1,12 @@
+{
+  "reports": {
+    "title": "Reports",
+    "allMembers": "All Members with Specific Task Counts",
+    "email": "Email",
+    "role": "Role",
+    "lowPriority": "Low Priority",
+    "mediumPriority": "Medium Priority",
+    "highPriority": "High Priority",
+    "loading": "Loading..."
+  }
+}

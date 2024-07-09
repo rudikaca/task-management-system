@@ -1,5 +1,10 @@
 import {useCallback, useState} from "react";
+import {useSelector} from "react-redux";
+import {useTranslation} from "react-i18next";
 import { NavLink, useLocation } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import {auth} from "@/config/firebase-config";
+import {RootState} from "@/store";
 import { cn } from "@/lib/utils";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Icons } from "@/components/icons";
@@ -13,23 +18,23 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
-import { signOut } from "firebase/auth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { mainMenu } from "@/config/menu";
 import { ChevronDownIcon, ViewVerticalIcon } from "@radix-ui/react-icons";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Logo } from "../logo";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import {auth} from "@/config/firebase-config";
-import {useSelector} from "react-redux";
-import {RootState} from "@/store";
 
 export function Header() {
+    const { i18n } = useTranslation();
     const {user} = useSelector((state: RootState) => state.auth)
     const [open, setOpen] = useState(false)
     const location = useLocation();
 
     const handleSignOut = useCallback(() => signOut(auth), []);
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+    };
 
     const filteredMenu = mainMenu.filter(item => !item.adminOnly || user?.role === 'ADMIN');
 
@@ -172,6 +177,22 @@ export function Header() {
                         {/* <CommandMenu /> */}
                     </div>
                     <nav className="flex items-center space-x-2">
+                        {/* Language Switcher Dropdown */}
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant='ghost'
+                                    className='relative h-8 w-8 rounded-full'>
+                                    🌎
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className='w-56' align='end' forceMount>
+                                <DropdownMenuLabel>Select Language</DropdownMenuLabel>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={() => changeLanguage('en')}>English</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => changeLanguage('de')}>Deutsch</DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <Button
